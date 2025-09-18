@@ -37,4 +37,5 @@ app.get('/api/attendance', async (req, res) => {
   res.json(data);
 });
 
-app.listen(3000, () => console.log('Server running on port 3000'));
+const PORT = process.env.PORT || 3000; // Use Render's port in production, fallback to 3000 locally
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
