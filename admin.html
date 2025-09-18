@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>QR Attendance - Admin</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Admin Dashboard</h2>
+  <div style="margin: 24px 0;">
+    <h3>Session QR Code</h3>
+    <div id="qrcode"></div>
+    <p>
+      Session Token:
+      <input id="sessionTokenInput" value="SESSION123" />
+      <button onclick="updateSessionToken()">Set</button>
+      <span id="sessionToken"></span>
+    </p>
+  </div>
+  <table border="1" id="attendanceTable">
+    <tr>
+      <th>Student ID</th>
+      <th>Session Token</th>
+      <th>Timestamp</th>
+    </tr>
+  </table>
+  <button onclick="loadData()">Refresh</button>
+  <a href="scan.html" target="_blank">Student Scan Page</a>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script>
+    let sessionToken = "SESSION123";
+    function updateSessionToken() {
+      sessionToken = document.getElementById("sessionTokenInput").value;
+      document.getElementById("sessionToken").innerText = sessionToken;
+      document.getElementById("qrcode").innerHTML = "";
+      new QRCode(document.getElementById("qrcode"), {
+        text: sessionToken,
+        width: 200,
+        height: 200
+      });
+    }
+    updateSessionToken();
+
+    async function loadData(){
+      try {
+        const res = await fetch('http://localhost:3000/api/attendance');
+        const data = await res.json();
+        const table = document.getElementById("attendanceTable");
+        table.innerHTML = "<tr><th>Student ID</th><th>Session Token</th><th>Timestamp</th></tr>";
+        data.forEach(item=>{
+          const row = table.insertRow();
+          row.insertCell(0).innerText = item.studentId;
+          row.insertCell(1).innerText = item.session;
+          row.insertCell(2).innerText = item.time;
+        });
+      } catch (err) {
+        alert("Error loading attendance data from server.");
+      }
+    }
+    loadData();
+  </script>
+</body>
+</html>

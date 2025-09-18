@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>QR Attendance - Student</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/minified/html5-qrcode.min.js"></script>
+</head>
+<body>
+  <h2>Scan QR to mark attendance</h2>
+  <div id="qr-reader" style="width:300px"></div>
+
+  <div id="markDiv" style="display:none">
+    <p>Session Token: <span id="session"></span></p>
+    <label>Student ID: <input id="studentId" placeholder="S101"/></label>
+    <button id="markBtn">Mark Attendance</button>
+    <p id="status"></p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

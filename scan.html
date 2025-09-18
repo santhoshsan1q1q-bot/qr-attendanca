@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>QR Attendance - Student</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Mark Attendance</h2>
+  <form id="attendanceForm">
+    <label>Session Token:<br>
+      <input type="text" id="sessionTokenInput" required>
+    </label><br><br>
+    <label>Student Roll No:<br>
+      <input type="text" id="studentIdInput" required>
+    </label><br><br>
+    <button type="submit">Mark Present</button>
+  </form>
+  <div id="result"></div>
+  <script>
+    document.getElementById("attendanceForm").onsubmit = async function(e) {
+      e.preventDefault();
+      const session = document.getElementById("sessionTokenInput").value.trim();
+      const studentId = document.getElementById("studentIdInput").value.trim();
+      if (!session || !studentId) return;
+      try {
+        const res = await fetch('http://192.168.1.5:3000/api/attendance', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ session, studentId })
+        });
+        if (res.status === 409) {
+          document.getElementById("result").innerText = "Already marked present for this session.";
+        } else if (res.ok) {
+          document.getElementById("result").innerText = "Attendance marked!";
+          document.getElementById("attendanceForm").reset();
+        } else {
+          document.getElementById("result").innerText = "Error marking attendance.";
+        }
+      } catch (err) {
+        document.getElementById("result").innerText = "Server error.";
+      }
+    };
+  </script>
+</body>
+</html>
