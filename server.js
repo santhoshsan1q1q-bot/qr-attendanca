@@ -41,8 +41,9 @@ app.get('/api/attendance', async (req, res) => {
   res.json(data);
 });
 // Root route (homepage)
+// Serve scan.html as the homepage
 app.get('/', (req, res) => {
-  res.send('<h1>✅ QR Attendance App</h1><p>Use /api/attendance to interact.</p>');
+  res.sendFile(__dirname + '/scan.html');
 });
 
 
