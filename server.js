@@ -36,6 +36,11 @@ app.get('/api/attendance', async (req, res) => {
   const data = await Attendance.find();
   res.json(data);
 });
+// Root route (homepage)
+app.get('/', (req, res) => {
+  res.send('<h1>✅ QR Attendance App</h1><p>Use /api/attendance to interact.</p>');
+});
+
 
 const PORT = process.env.PORT || 3000; // Use Render's port in production, fallback to 3000 locally
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
